@@ -7,6 +7,20 @@ import math
 class OrthogonalCollocation:
     
     def __init__(self, fun, bc, n, a, x0=0.0, x1=1.0):
+        """Class for creating Orthogonal Collocation problems.
+        
+        For details see Villadsen and Stewart (1967).
+        
+        Villadsen, J. V., and Warren E. Stewart. "Solution of boundary-value problems by orthogonal collocation." Chemical Engineering Science 22.11 (1967): 1483-1501.
+
+        Args:
+            fun (callable): Function in the format f(x, y, dy, d2y, *args) that returns zeros in internal collocation points.
+            bc (callable): Function in the format bc(x, y, dy, d2y, *args) that returns zeros in the boundary.
+            n (int): Number of internal collocation points.
+            a (int): Geometry: 1 for slabs, 2 for cylinders, and 3 for spheres.
+            x0 (float, optional): Starting point in independent variable. Must be the symmetry point. Defaults to 0.0.
+            x1 (float, optional): Boundary point. Defaults to 1.0.
+        """
         
         self.fun = fun
         self.bc = bc
@@ -31,6 +45,14 @@ class OrthogonalCollocation:
         self.W = matrices["W"]
     
     def collocate(self, y0, args=(), kwargs={}, **options):
+        """Method to find y values in collocation points.
+
+        Args:
+            y0 (2d array): Initial estimates for collocation dependent variables. Shape (m, n).
+            args (tuple, optional): Additional arguments passed to functions. Defaults to ().
+            kwargs (dict, optional): Additional arguments passed to functions ignore for now. Defaults to {}.
+            **options: keyword arguments passed to scipy.optimize.root.
+        """
         
         y0 = y0.flatten()
         
@@ -44,6 +66,16 @@ class OrthogonalCollocation:
         self._root = sol_root
     
     def effectiveness(self, fun, args=(), kwargs={}):
+        """Integrate a function over the volume and obtain a coefficient compared to the surface value.
+
+        Args:
+            fun (callable): Function to evaluate. f(x, y, *args, **kwargs).
+            args (tuple, optional): Additional arguments passed to functions. Defaults to ().
+            kwargs (dict, optional): Additional arguments passed to functions ignore for now. Defaults to {}.
+
+        Returns:
+            1d array: Effectiveness factors for function outputs.
+        """
 
         rates = fun(self.x, self.y, *args, **kwargs)
         int_func = rates.dot(self.W)
@@ -111,6 +143,14 @@ class OrthogonalCollocation:
         return C
     
     def extrapolate(self, x):
+        """Calculates y values for other coordinates based on polynomial coefficients.
+
+        Args:
+            x (1d array like): Reference values of shape (n,).
+
+        Returns:
+            2d array: y values in shape (m, n)
+        """
         
         x = ((x - self.x0) / (self.x1 - self.x0))
         X = np.atleast_1d(x).reshape([-1, 1]) ** (np.arange(self.n + 1) * 2)
@@ -119,6 +159,7 @@ class OrthogonalCollocation:
     
     @property
     def theta(self):
+        """Polynomial coefficients."""
         
         return np.linalg.solve(self.Q, self.y.T)
     
