@@ -54,7 +54,7 @@ class OrthogonalCollocation:
             **options: keyword arguments passed to scipy.optimize.root.
         """
         
-        y0 = y0.flatten()
+        y0 = np.array(y0).flatten()
         
         sol_root = root(self._obj_collocation, y0, args=args, **options)
         
@@ -91,6 +91,7 @@ class OrthogonalCollocation:
         Returns:
             2d array: y values in shape (m, n)
         """
+        x = np.array(x)
         
         x = ((x - self.x0) / (self.x1 - self.x0))
         X = np.atleast_1d(x).reshape([-1, 1]) ** (np.arange(self.n + 1) * 2)
@@ -113,6 +114,7 @@ class OrthogonalCollocation:
         Returns:
             float or array like: Values of Pi(x^2)
         """
+        x = np.array(x)
         
         return hyp2f1(-i, i + self.a/2 + 1, self.a/2, x**2)
     
@@ -138,6 +140,7 @@ class OrthogonalCollocation:
         Returns:
             float or array like: Dependent variables evaluated in x.
         """
+        x = np.array(x)
         
         return self.y[:, [-1]] + (1 - x**2) * np.sum([self.ak[:, [i]] * np.atleast_2d(self.Pi(i, x))\
             for i in range(self.n)], axis=0)
