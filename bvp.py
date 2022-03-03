@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.optimize import root
-from scipy.special import gamma
+from scipy.special import gamma, hyp2f1
 import math
 
 
@@ -82,6 +82,66 @@ class OrthogonalCollocation:
         int_surf = rates[..., -1] * self.W.sum()
         return int_func / int_surf
     
+    def interpolate(self, x):
+        """Calculates interpolated y values based on collocation points.
+
+        Args:
+            x (1d array like): Reference values of shape (n,).
+
+        Returns:
+            2d array: y values in shape (m, n)
+        """
+        
+        x = ((x - self.x0) / (self.x1 - self.x0))
+        X = np.atleast_1d(x).reshape([-1, 1]) ** (np.arange(self.n + 1) * 2)
+        y = X.dot(self.theta).T
+        return y
+    
+    @property
+    def theta(self):
+        """Interpolation polynomial coefficients."""
+        
+        return np.linalg.solve(self.Q, self.y.T)
+    
+    def Pi(self, i, x):
+        """Evaluates the problem Jacobi polynomial of order i in x^2, Pi(x^2).
+
+        Args:
+            i (int): Polynomial order.
+            x (float or array like): Independet variable.
+
+        Returns:
+            float or array like: Values of Pi(x^2)
+        """
+        
+        return hyp2f1(-i, i + self.a/2 + 1, self.a/2, x**2)
+    
+    @property
+    def ak(self):
+        """Returns values of coefficients from the exapansion form as in Villadsen and Stewart (1967). \
+            For vectorized implementations, theta is preferred.
+
+        Returns:
+            array like: Values of polynomial coefficients from original exapanded form.
+        """
+        
+        return np.array([1 / OrthogonalCollocation.calc_const(i, self.a) *\
+            (self.W * (self.y - self.y[:, [-1]])).dot(self.Pi(i, self.points))\
+                for i in range(self.n)]).T
+    
+    def expansion(self, x):
+        """Evaluates function in x using original expansion form from Villadsen and Stewart (1967), equation (6).
+
+        Args:
+            x (float or array like): Value of independent variable.
+
+        Returns:
+            float or array like: Dependent variables evaluated in x.
+        """
+        
+        return self.y[:, [-1]] + (1 - x**2) * np.sum([self.ak[:, [i]] * np.atleast_2d(self.Pi(i, x))\
+            for i in range(self.n)], axis=0)
+    
     @staticmethod
     def _collocation_points(x0, x1, n, a):
         
@@ -141,27 +201,6 @@ class OrthogonalCollocation:
             (4*i + a + 2) * gamma(i + a/2) * gamma(i + a/2 + 1))
         
         return C
-    
-    def extrapolate(self, x):
-        """Calculates y values for other coordinates based on polynomial coefficients.
-
-        Args:
-            x (1d array like): Reference values of shape (n,).
-
-        Returns:
-            2d array: y values in shape (m, n)
-        """
-        
-        x = ((x - self.x0) / (self.x1 - self.x0))
-        X = np.atleast_1d(x).reshape([-1, 1]) ** (np.arange(self.n + 1) * 2)
-        y = X.dot(self.theta).T
-        return y
-    
-    @property
-    def theta(self):
-        """Polynomial coefficients."""
-        
-        return np.linalg.solve(self.Q, self.y.T)
     
     def _evaluate(self, y, *args, **kwargs):
         
