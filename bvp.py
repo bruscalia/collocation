@@ -6,8 +6,9 @@ import math
 
 class OrthogonalCollocation:
     
-    def __init__(self, fun, bc, n, a, x0=0.0, x1=1.0):
+    def __init__(self, fun, bc, n, a, x0=0.0, x1=1.0, vectorized=True):
         """Class for creating Orthogonal Collocation problems.
+        When describing the shape of arguments, m is the number of decision variables and n is the number of elements along x coordinate.
         
         For details see Villadsen and Stewart (1967).
         
@@ -15,14 +16,17 @@ class OrthogonalCollocation:
 
         Args:
             fun (callable): Function in the format f(x, y, dy, d2y, *args) that returns zeros in internal collocation points.
-            bc (callable): Function in the format bc(x, y, dy, d2y, *args) that returns zeros in the boundary.
+                Here x is a either a scalar or a (n,) shape vector, and y is a either a vector with shape (m,) or (m, n), in which each line corresponds to a single variable.
+                The function must return array_like with y shape. These choices are related to the 'vectorized' parameter.
+            bc (callable): Function in the format bc(x, y, dy, d2y, *args) that returns a vector of zeros, shape (m,) in the boundary.
             n (int): Number of internal collocation points.
             a (int): Geometry: 1 for slabs, 2 for cylinders, and 3 for spheres.
             x0 (float, optional): Starting point in independent variable. Must be the symmetry point. Defaults to 0.0.
             x1 (float, optional): Boundary point. Defaults to 1.0.
+            vectorized (bool, optional): Either or nor fun is implemented in vectorized fashion.
         """
         
-        self.fun = fun
+        self.fun = FunctionCaller(fun, vectorized=vectorized)
         self.bc = bc
         self.n = n
         self.a = a
@@ -220,3 +224,23 @@ class OrthogonalCollocation:
         y = y.reshape([-1, self.n + 1])
         res = self._evaluate(y, *args, **kwargs).flatten()
         return res
+
+
+class FunctionCaller:
+    
+    def __init__(self, fun, vectorized=True):
+        
+        self.fun = fun
+        self.vectorized = vectorized
+        self.caller = self._vectorized_call if vectorized else self._elementwise_call
+    
+    def __call__(self, x, y, dy, d2y, *args, **kwargs):
+        return self.caller(x, y, dy, d2y, *args, **kwargs)
+    
+    def _vectorized_call(self, x, y, dy, d2y, *args, **kwargs):
+        return self.fun(x, y, dy, d2y, *args, **kwargs)
+
+    def _elementwise_call(self, x, y, dy, d2y, *args, **kwargs):
+        return  np.column_stack([self.fun(xj, y[:, j], dy[:, j], d2y[:, j], *args, **kwargs) \
+            for j, xj in enumerate(x)])
+    
