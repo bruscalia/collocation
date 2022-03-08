@@ -8,7 +8,7 @@ class OrthogonalCollocation:
     
     def __init__(self, fun, bc, n, a, x0=0.0, x1=1.0, vectorized=True):
         """Class for creating Orthogonal Collocation problems.
-        When describing the shape of arguments, m is the number of decision variables and n is the number of elements along x coordinate.
+        When describing the shape of arguments, m is the number of decision variables and n is the number of elements along x coordinates.
         
         For details see Villadsen and Stewart (1967).
         
