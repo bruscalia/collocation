@@ -3,7 +3,9 @@ A repository with a python implementation of Orthogonal Collocation by Villadsen
 
 See two simple examples and a real world problem in the notebook example_collocation.
 
-¬pip install -e git+https://github.com/bruscalia/collocation#egg=collocation
+```
+pip install -e git+https://github.com/bruscalia/collocation#egg=collocation
+```
 
 ## Usage
 
