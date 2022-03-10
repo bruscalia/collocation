@@ -7,11 +7,13 @@ See two simple examples and a real world problem in the notebook example_colloca
 
 ## Usage
 
-```import numpy as np
+```
+import numpy as np
 from collocation.bvp import OrthogonalCollocation
 ```
 
-```#Internal function
+```
+#Internal function
 def fun_1(x, y, dy, d2y, k):
     
     return d2y[0] + k * y[0] + 1
