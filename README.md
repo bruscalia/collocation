@@ -1,5 +1,5 @@
 # collocation
-A repository with a python implementation of Orthogonal Collocation by Villadsen and Stewart (1967) for solving second order boundary value problems with symmetry.
+A repository with a Python implementation of Orthogonal Collocation by Villadsen and Stewart (1967) for solving second order boundary value problems with symmetry.
 
 See two simple examples and a real world problem in the notebook [example_collocation](https://github.com/bruscalia/collocation/example_collocation.ipynb).
 
