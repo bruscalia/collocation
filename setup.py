@@ -15,8 +15,8 @@ setup(
               'Differential Equations',
               'Numerical Methods'],
   install_requires=[
-          'numpy==1.19.*',
-          'scipy==1.7.*',
+          'numpy>=1.19.*',
+          'scipy>=1.7.*',
           'matplotlib',
       ],
 )

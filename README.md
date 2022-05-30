@@ -12,13 +12,14 @@ pip install -e git+https://github.com/bruscalia/collocation#egg=collocation
 
 ## Usage
 
-```
+```python
 import numpy as np
 from collocation.bvp import OrthogonalCollocation
 ```
 
 The user must define a function that returns zeros in internal points and another that returns zeros in the surface boundary.
-```
+
+```python
 #Internal function
 def fun_1(x, y, dy, d2y, k):
     
@@ -33,7 +34,8 @@ k = 1.0
 ```
 
 Then must instantiate a problem using the **OrthogonalCollocation** class, define initial estimations and collocate points. The points are available in the *y* property of the problem and the method *interpolate* might provide values given *x* coordinates.
-```
+
+```python
 #Create problem
 problem_1 = OrthogonalCollocation(fun_1, bc_1, 6, 1, x0=0.0, x1=1.0, vectorized=True)
 
