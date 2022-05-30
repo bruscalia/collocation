@@ -1,7 +1,7 @@
 # collocation
 A repository with a Python implementation of Orthogonal Collocation by Villadsen and Stewart (1967) for solving second order boundary value problems with symmetry.
 
-See two simple examples and a real world problem in the notebook [example_collocation](https://github.com/bruscalia/collocation/example_collocation.ipynb).
+See two simple examples and a real world problem in the notebook [example_collocation](https://github.com/bruscalia/collocation/blob/main/notebooks/example_collocation.ipynb).
 
 ## Install
 As it is a very short package, we have not made it available via PyPi. So the user must either clone the repository using git (see code below) or download the files and use in a corresponding directory.
