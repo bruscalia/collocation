@@ -52,7 +52,7 @@ problem_1.collocate(y01, args=k, method="hybr", tol=1e-6)
 ## Citation
 This was developed as a part of the modeling in the styrene reactor simulation project:
 
-B., Costa, A. O. S. & Costa Junior, E. F., 2021. Simulation and optimization of axial-flow and radial-flow reactors for dehydrogenation of ethylbenzene into styrene based on a heterogeneous kinetic model. Chem. Eng. Sci., Volume 244, p. 116805. doi:10.1016/j.ces.2021.116805.
+Leite, B., Costa, A. O. S. & Costa Junior, E. F., 2021. Simulation and optimization of axial-flow and radial-flow reactors for dehydrogenation of ethylbenzene into styrene based on a heterogeneous kinetic model. Chem. Eng. Sci., Volume 244, p. 116805. doi:10.1016/j.ces.2021.116805.
 
 The code is uploaded on ResearchGate and can be cited linked to doi:10.13140/RG.2.2.17223.78240.
 
