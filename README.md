@@ -57,7 +57,7 @@ problem = OrthogonalCollocation(fun, bc, 6, 1, x0=0.0, x1=1.0, vectorized=True)
 # Initial estimation
 y0 = np.zeros([2, n_points + 1])
 
-#Collocation using scipy.optimize.root in backend
+# Collocation using scipy.optimize.root in backend
 problem.collocate(y0, args=(k1, k2), method="hybr", tol=1e-6)
 ```
 
