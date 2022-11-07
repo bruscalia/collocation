@@ -18,11 +18,11 @@ $$\displaystyle \frac{d^2 y_1}{dx^2} + k_1 y_2 + 1 = 0$$
 
 $$\displaystyle \frac{d^2 y_2}{dx^2} + k_2 log(1 + y_1) = 0$$
 
-$$\displaystyle y_1 = 0 \; \text{at} \; x = 1$$
+$$\displaystyle y_1 = 0 \text{, at } x = 1$$
 
-$$\displaystyle y_2 - 1 = 0 \; \text{at} \; x = 1$$
+$$\displaystyle y_2 - 1 = 0 \text{, at } x = 1$$
 
-$$\displaystyle \frac{dy_1}{dx} = \frac{dy_2}{dx} = 0 \; \text{at} \; x = 0$$
+$$\displaystyle \frac{dy_1}{dx} = \frac{dy_2}{dx} = 0 \text{, at } x = 0$$
 
 First, import the necessary modules to solve it.
 
