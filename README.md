@@ -10,19 +10,22 @@ As it is a very short package, we have not made it available via PyPi. So the us
 pip install -e git+https://github.com/bruscalia/collocation#egg=collocation
 ```
 
+Note: It might be useful to write "git+https://github.com/bruscalia/collocation#egg=collocation" if installing directly from a Python interpreter as # can be interpreted as a comment.
+
 ## Usage
 
 Consider the following system:
 
-$$\displaystyle \frac{d^2 y_1}{dx^2} + k_1 y_2 + 1 = 0$$
-
-$$\displaystyle \frac{d^2 y_2}{dx^2} + k_2 log(1 + y_1) = 0$$
-
-$$\displaystyle y_1 = 0 \text{, at } x = 1$$
-
-$$\displaystyle y_2 - 1 = 0 \text{, at } x = 1$$
-
-$$\displaystyle \frac{dy_1}{dx} = \frac{dy_2}{dx} = 0 \text{, at } x = 0$$
+$$
+\displaystyle
+\begin{align}
+  & \frac{d^2 y_1}{dx^2} + k_1 y_2 + 1 = 0\\
+  & \frac{d^2 y_2}{dx^2} + k_2 log(1 + y_1) = 0\\
+  & y_1 = 0, & \text{at } x = 1\\
+  & y_2 - 1 = 0, & \text{at } x = 1\\
+  & \frac{dy_1}{dx} = \frac{dy_2}{dx} = 0, & \text{at } x = 0
+\end{align}
+$$
 
 First, import the necessary modules to solve it.
 
