@@ -7,10 +7,8 @@ See two simple examples and a real world problem in the notebook [example_colloc
 As it is a very short package, we have not made it available via PyPi. So the user must either clone the repository using git (see code below) or download the files and use in a corresponding directory.
 
 ```
-pip install -e git+https://github.com/bruscalia/collocation#egg=collocation
+pip install git+https://github.com/bruscalia/collocation
 ```
-
-Note: It might be useful to write "git+https://github.com/bruscalia/collocation#egg=collocation" if installing directly from a Python interpreter as # can be interpreted as a comment.
 
 ## Usage
 
